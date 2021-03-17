@@ -31,21 +31,45 @@
     </div>
     <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
-        {% if new_comment %}
-        <div class="alert alert-success" role="alert">
-          Your comment is awaiting moderation
-        </div>
-        {% else %}
         {% load crispy_forms_tags %}
         <h3>Leave a comment</h3>
-        <form method="post" style="margin-top: 1.3em;">
+        <form id="comment-form" method="post" style="margin-top: 1.3em;">
           {{ comment_form | crispy }}
           {% csrf_token %}
           <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
         </form>
-        {% endif %}
       </div>
     </div>
+    
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // catch the form's submit event
+            $('#comment-form').submit(function (event) {
+                event.preventDefault();
+                // create an AJAX call
+                $.ajax({
+                    data: $(this).serialize(), // get the form data
+                    type: $(this).attr('method'), // GET or POST
+                    url: $(this).attr('action'),
+                    // on success
+                    success: function (response) {
+                      alert("Thank you " + response.name + "! Your comment is awating moderation.");
+                      $('#comment-form').get(0).reset();
+                    },
+                    // on error
+                    error: function (response) {
+                        // alert the error if any error occured
+                        alert(response.responseJSON.errors)
+                    }
+                });
+                return false;
+            });
+        })
+    </script>
+    {% endblock javascript %}
   </div>
 </div>
 {% endblock content %}

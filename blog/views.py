@@ -2,6 +2,7 @@ from django.views import generic
 from .models import Post
 from .forms import CommentForm
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
 
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
@@ -15,20 +16,23 @@ def post_detail(request, slug):
     comments = post.comments.filter(active=True)
     new_comment = None
     # Comment posted
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
+    if request.method == 'POST' and request.is_ajax():
+        comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
-
+            name = comment_form.cleaned_data['name']
             # Create Comment object but don't save to database yet
             new_comment = comment_form.save(commit=False)
             # Assign the current post to the comment
             new_comment.post = post
             # Save the comment to the database
             new_comment.save()
+            return JsonResponse({"name": name}, status=200)
+        else:
+            errors = comment_form.errors.as_json()
+            return JsonResponse({"errors": errors}, status=400)
     else:
         comment_form = CommentForm()
 
     return render(request, template_name, {'post': post,
                                            'comments': comments,
-                                           'new_comment': new_comment,
                                            'comment_form': comment_form})
