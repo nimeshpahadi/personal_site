@@ -11,25 +11,7 @@
     </div>
     {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
 
-    <div class="col-md-8 card mb-4  mt-3 ">
-      <div class="card-body">
-        <!-- comments -->
-        <h2>{{ comments.count }} comments</h2>
-
-        {% for comment in comments %}
-        <div class="comments" style="padding: 10px;">
-          <p class="font-weight-bold">
-            {{ comment.name }}
-            <span class=" text-muted font-weight-normal">
-              {{ comment.created_on }}
-            </span>
-          </p>
-          {{ comment.body | linebreaks }}
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="col-md-8 card mb-4  mt-3 ">
+    <!-- <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
         {% load crispy_forms_tags %}
         <h3>Leave a comment</h3>
@@ -39,7 +21,17 @@
           <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
         </form>
       </div>
+    </div> -->
+
+    <div class="main-comment-section">
+      {% include 'blog/comments.html' %}
     </div>
+
+    <!-- <div class="col-md-8 card mb-4  mt-3 ">
+      <div class="card-body">
+        
+      </div>
+    </div> -->
     
     {% block javascript %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -47,7 +39,7 @@
     <script>
         $(document).ready(function () {
             // catch the form's submit event
-            $('#comment-form').submit(function (event) {
+            $('.comment-form').submit(function (event) {
                 event.preventDefault();
                 // create an AJAX call
                 $.ajax({
@@ -57,7 +49,7 @@
                     // on success
                     success: function (response) {
                       alert("Thank you " + response.name + "! Your comment is awating moderation.");
-                      $('#comment-form').get(0).reset();
+                      $('.comment-form').get(0).reset();
                     },
                     // on error
                     error: function (response) {
@@ -68,6 +60,55 @@
                 return false;
             });
         })
+
+        // $(document).on('submit', '.comment-form', function(event){
+        //   event.preventDefault();
+        //   console.log($(this).serialize());
+        //   $.ajax({
+        //     type: 'POST',
+        //     url: $(this).attr('action'),
+        //     data: $(this).serialize(),
+        //     dataType: 'json',
+        //     success: function(response) {
+        //       // $('.main-comment-section').html(response['form']);
+        //       $('.comment-form').get(0).reset();
+        //       $('.reply-btn').click(function() {
+        //         $(this).parent().parent().next('.replied-comments').fadeToggle();
+        //         $('.comment-form').get(0).reset();
+        //       });
+        //     },
+        //     error: function(rs, e) {
+        //       console.log(rs.responseText);
+        //     },
+        //   });
+        // });
+
+        $('.reply-btn').click(function() {
+          $(this).parent().parent().next('.replied-comments').fadeToggle()
+        });
+
+        $(document).on('submit', '.reply-form', function(event){
+          event.preventDefault();
+          console.log($(this).serialize());
+          $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+              $('.main-comment-section').html(response['form']);
+              $('textarea').val('');
+              $('.reply-btn').click(function() {
+                $(this).parent().parent().next('.replied-comments').fadeToggle();
+                $('textarea').val('');
+              });
+            },
+            error: function(rs, e) {
+              console.log(rs.responseText);
+            },
+          });
+        });
+        
     </script>
     {% endblock javascript %}
   </div>

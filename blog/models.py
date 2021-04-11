@@ -34,7 +34,8 @@ class Comment(models.Model):
     email = models.EmailField()
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    active = models.BooleanField(default=False)
+    # active = models.BooleanField(default=False)
+    reply = models.ForeignKey("Comment", on_delete=models.CASCADE, related_name="replies", null=True)
 
     class Meta:
         ordering = ['created_on']
