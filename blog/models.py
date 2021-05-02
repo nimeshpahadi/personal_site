@@ -15,6 +15,7 @@ class Post(models.Model):
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
+    restrict_comment = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created_on']
@@ -34,7 +35,6 @@ class Comment(models.Model):
     email = models.EmailField()
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
-    # active = models.BooleanField(default=False)
     reply = models.ForeignKey("Comment", on_delete=models.CASCADE, related_name="replies", null=True)
 
     class Meta:

@@ -25,9 +25,11 @@
       </div>
     </div> -->
 
-    <div class="main-comment-section">
-      {% include 'blog/comments.html' %}
-    </div>
+    {% if not post.restrict_comment %}
+      <div class="main-comment-section">
+        {% include 'blog/comments.html' %}
+      </div>
+    {% endif %}
 
     <!-- <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
