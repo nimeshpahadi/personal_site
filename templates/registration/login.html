@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <small>
+    	<p><a href="{% url 'password_reset' %}">Forgotten Your Password?</a></p>
+    </small>
+    <p><input type="submit" value="Login" class="btn btn-outline-success"></p>
+  </form>
+<p><a href="{% url 'register' %}">Register</a></p>
+<p><a href="{% url 'home' %}">Back to home page</a></p>
+{% endblock %}
