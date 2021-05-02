@@ -11,7 +11,10 @@
         <p class="card-text ">{{ post.content | safe }}</p>
       </div>
     </div>
-    {% block sidebar %} {% include 'blog/sidebar.html' %} {% endblock sidebar %}
+    
+    {% block sidebar %} 
+      {% include 'blog/sidebar.html' %} 
+    {% endblock sidebar %}
 
     <!-- <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
@@ -37,84 +40,6 @@
       </div>
     </div> -->
     
-    {% block javascript %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            // catch the form's submit event
-            $('.comment-form').submit(function (event) {
-                event.preventDefault();
-                // create an AJAX call
-                $.ajax({
-                    data: $(this).serialize(), // get the form data
-                    type: $(this).attr('method'), // GET or POST
-                    url: $(this).attr('action'),
-                    // on success
-                    success: function (response) {
-                      alert("Thank you " + response.name + "! Your comment is awating moderation.");
-                      $('.comment-form').get(0).reset();
-                    },
-                    // on error
-                    error: function (response) {
-                        // alert the error if any error occured
-                        alert(response.responseJSON.errors)
-                    }
-                });
-                return false;
-            });
-        })
-
-        // $(document).on('submit', '.comment-form', function(event){
-        //   event.preventDefault();
-        //   console.log($(this).serialize());
-        //   $.ajax({
-        //     type: 'POST',
-        //     url: $(this).attr('action'),
-        //     data: $(this).serialize(),
-        //     dataType: 'json',
-        //     success: function(response) {
-        //       // $('.main-comment-section').html(response['form']);
-        //       $('.comment-form').get(0).reset();
-        //       $('.reply-btn').click(function() {
-        //         $(this).parent().parent().next('.replied-comments').fadeToggle();
-        //         $('.comment-form').get(0).reset();
-        //       });
-        //     },
-        //     error: function(rs, e) {
-        //       console.log(rs.responseText);
-        //     },
-        //   });
-        // });
-
-        $('.reply-btn').click(function() {
-          $(this).parent().parent().next('.replied-comments').fadeToggle()
-        });
-
-        $(document).on('submit', '.reply-form', function(event){
-          event.preventDefault();
-          console.log($(this).serialize());
-          $.ajax({
-            type: 'POST',
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-              $('.main-comment-section').html(response['form']);
-              $('textarea').val('');
-              $('.reply-btn').click(function() {
-                $(this).parent().parent().next('.replied-comments').fadeToggle();
-                $('textarea').val('');
-              });
-            },
-            error: function(rs, e) {
-              console.log(rs.responseText);
-            },
-          });
-        });
-        
-    </script>
-    {% endblock javascript %}
   </div>
 </div>
 {% endblock content %}
