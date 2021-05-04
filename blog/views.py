@@ -6,11 +6,25 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.template.loader import render_to_string
+from django.db.models import Q
 
-class PostList(generic.ListView):
-    queryset = Post.objects.filter(status=1).order_by('-created_on')
-    template_name = 'blog/index.html'
-    paginate_by = 3
+# class PostList(generic.ListView):
+#     queryset = Post.objects.filter(status=1).order_by('-created_on')
+#     template_name = 'blog/index.html'
+#     paginate_by = 3
+
+
+def post_list(request):
+    posts = Post.published.all()
+    query = request.GET.get('q')
+    if query:
+        posts = Post.published.filter(
+            Q(title__icontains=query)|
+            Q(author__username=query)|
+            Q(content__icontains=query)
+            )
+    context = {'posts': posts,}
+    return render(request, 'blog/index.html', context)
 
 
 def post_detail(request, id, slug):

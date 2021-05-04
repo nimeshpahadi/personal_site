@@ -17,7 +17,7 @@
     <div class="row">
         <!-- Blog Entries Column -->
         <div class="col-md-8 mt-3 left">
-            {% for post in post_list %}
+            {% for post in posts %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
@@ -26,6 +26,10 @@
                     <a href="{% url 'post_detail' post.slug post.id %}" class="btn btn-primary">Read More &rarr;</a>
                 </div>
             </div>
+            {% empty %}
+                <div class="container-fluid">
+                    <h3>No Posts Found having search query "{{ request.GET.q }}"</h3>
+                </div>
             {% endfor %}
         </div>
         {% block sidebar %} {% include 'blog/sidebar.html' %} {% endblock sidebar %}
