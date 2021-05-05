@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 class CommentForm(forms.ModelForm):
     body = forms.CharField(label="", widget=forms.Textarea(attrs=
         {
-        'class': 'form-control', 'placeholder': 'Write Something Here !!!', 'rows':'4', 'cols':'50'
+        'class': 'form-control', 'placeholder': 'Write a comment...', 'rows':'4', 'cols':'50'
         }
         ))
     class Meta:
