@@ -5,3 +5,4 @@ django-summernote==0.8.11.6
 mysqlclient==2.0.3
 pytz==2021.1
 sqlparse==0.4.1
+python-dotenv
