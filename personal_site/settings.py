@@ -28,7 +28,7 @@ TEMPLATES_DIRS = os.path.join(BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env(SECRET_KEY)
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
@@ -93,14 +93,22 @@ WSGI_APPLICATION = 'personal_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env(DATABASE_NAME),
-        'USER': env(DATABASE_USER),
-        'PASSWORD': env(DATABASE_PASSWORD),
-        'HOST': env(DATABASE_HOST),
-        'PORT': env(DATABASE_PORT),
-        'OPTIONS': {
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
+	'OPTIONS': {
             'sql_mode': 'traditional',
         },
+    },
+    'development': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mydb',
+        'USER': 'myuser',
+        'PASSWORD': 'mypass',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
