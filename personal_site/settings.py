@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
+env = environ.Env()
+# reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +28,10 @@ TEMPLATES_DIRS = os.path.join(BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['nimeshpahadi.pythonanywhere.com', '127.0.0.1']
 
@@ -89,11 +93,11 @@ WSGI_APPLICATION = 'personal_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nimeshpahadi$personal_site',
-        'USER': 'nimeshpahadi',
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': 'nimeshpahadi.mysql.pythonanywhere-services.com',
-        'PORT': '',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
         'OPTIONS': {
             'sql_mode': 'traditional',
         },
