@@ -21,8 +21,8 @@
           <span>Hi {{ request.user|capfirst }}</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-          <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
         </div>
       </li>
       {% else %}
