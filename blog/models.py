@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class PublishedManager(models.Manager):
@@ -33,9 +34,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        from django.urls import reverse
-
-        return reverse("post_detail", kwargs={"slug": str(self.slug)})
+        return reverse("post_detail", args=[self.id, self.slug])
 
 
 class Comment(models.Model):
