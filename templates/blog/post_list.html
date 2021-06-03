@@ -21,9 +21,9 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
-                    <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
+                    <p class="card-text text-muted h6">{{ post.author|capfirst }} | {{ post.created_on}} </p>
                     <p class="card-text">{{ post.content|safe|truncatewords:"50"|linebreaks }}</p>
-                    <a href="{% url 'post_detail' post.slug post.id %}" class="btn btn-primary">Read More &rarr;</a>
+                    <a href="{% url 'post_detail' post.slug post.id %}">READ MORE</a>
                 </div>
             </div>
             {% empty %}
@@ -36,18 +36,30 @@
     </div>
 </div>
 
-{% if is_paginated %}
-  <nav aria-label="Page navigation conatiner"></nav>
-  <ul class="pagination justify-content-center">
-    {% if page_obj.has_previous %}
-    <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
-    {% endif %}
-    {% if page_obj.has_next %}
-    <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+<ul class="pagination">
+  {% if posts.has_previous %}
+    <li class="page-item">
+      <a href="?page={{ posts.previous_page_number }}" class="page-link">&laquo;</a>
+    </li>
+  {% endif %}
 
+  {% for p in page_range %}
+    {% if posts.number == p %}
+      <li class="page-item active">
+        <a href="?page={{ p }}" class="page-link">{{ p }}</a>
+      </li>
+    {% else %}
+      <li class="page-item">
+        <a href="?page={{ p }}" class="page-link">{{ p }}</a>
+      </li>
     {% endif %}
-  </ul>
-  </nav>
-</div>
-{% endif %}
+  {% endfor %}
+
+  {% if posts.has_next %}
+    <li class="page-item">
+      <a href="?page={{ posts.next_page_number }}" class="page-link">&raquo;</a>
+    </li>
+  {% endif %}
+</ul>
+
 {%endblock%}

@@ -157,8 +157,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = 'post_list'
 
-LOGOUT_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = 'post_list'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

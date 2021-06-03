@@ -7,24 +7,51 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.db.models import Q
-
-# class PostList(generic.ListView):
-#     queryset = Post.objects.filter(status=1).order_by('-created_on')
-#     template_name = 'blog/index.html'
-#     paginate_by = 3
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def post_list(request):
-    posts = Post.published.all()
+    post_list = Post.published.all()
     query = request.GET.get('q')
     if query:
-        posts = Post.published.filter(
+        post_list = Post.published.filter(
             Q(title__icontains=query)|
             Q(author__username=query)|
             Q(content__icontains=query)
             )
-    context = {'posts': posts,}
-    return render(request, 'blog/index.html', context)
+    paginator = Paginator(post_list, 2)
+    page = request.GET.get('page')
+    
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    
+    if page is None:
+        start_index = 0
+        end_index = 7
+    else:
+        (start_index, end_index) = proper_pagination(posts, index=4)
+
+    page_range = list(paginator.page_range)[start_index:end_index]
+
+    context = {
+        'posts': posts,
+        'page_range': page_range,
+    }
+
+    return render(request, 'blog/post_list.html', context)
+
+
+def proper_pagination(posts, index):
+    start_index = 0
+    end_index = 7
+    if posts.number > index:
+        start_index = posts.number - index
+        end_index = start_index + end_index
+    return (start_index, end_index)
 
 
 def post_detail(request, id, slug):
@@ -64,4 +91,4 @@ def register(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             user.save()
             login(request, user)
-            return redirect(reverse("home"))
+            return redirect(reverse("post_list"))
