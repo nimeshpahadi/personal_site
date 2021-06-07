@@ -1,14 +1,22 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <small>
-    	<p><a href="{% url 'password_reset' %}">Forgotten Your Password?</a></p>
-    </small>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+    <p><small>
+      <a href="{% url 'register' %}">Register</a> |
+      <a href="{% url 'password_reset' %}">Forgotten Your Password?</a>
+    </small></p>
     <p><input type="submit" value="Login" class="btn btn-outline-success"></p>
-  </form>
-<p><a href="{% url 'register' %}">Register</a></p>
-<p><a href="{% url 'post_list' %}">Back to home page</a></p>
+
+    <p>-- OR --</p>
+    
+    <a href="{% url 'social:begin' 'github' %}">
+      <button type="button" name="button" class="btn btn-primary">Github</button>
+    </a>
+
+    <a href="{% url 'social:begin' 'google-oauth2' %}">
+      <button type="button" name="button" class="btn btn-danger">Google+</button>
+    </a>
+</form>
 {% endblock %}

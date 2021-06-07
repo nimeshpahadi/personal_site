@@ -19,7 +19,7 @@ def post_list(request):
             Q(author__username=query)|
             Q(content__icontains=query)
             )
-    paginator = Paginator(post_list, 2)
+    paginator = Paginator(post_list, 5)
     page = request.GET.get('page')
     
     try:
