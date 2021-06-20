@@ -1,6 +1,6 @@
 from django.views import generic
 from .models import Post, Comment
-from .forms import CommentForm, CustomUserCreationForm
+from .forms import CommentForm, RegisterForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -82,13 +82,14 @@ def post_detail(request, id, slug):
 
 
 def register(request):
-    if request.method == "GET":
-        return render(request, "registration/register.html", {"form": CustomUserCreationForm})
-    elif request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             user.save()
             login(request, user)
             return redirect(reverse("post_list"))
+    else:
+        form = RegisterForm()
+    return render(request, 'registration/register.html', {'form': form})

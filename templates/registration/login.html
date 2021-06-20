@@ -1,22 +1,45 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-    <p><small>
-      <a href="{% url 'register' %}">Register</a> |
-      <a href="{% url 'password_reset' %}">Forgotten Your Password?</a>
-    </small></p>
-    <p><input type="submit" value="Login" class="btn btn-outline-success"></p>
 
-    <p>-- OR --</p>
+<div class="login-form">
+    <form method="post">
+        {% csrf_token %}
+        <h2 class="text-center">Sign in</h2>    
+        <div class="text-center social-btn">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-google btn-block"><i class="fa fa-google"></i> Connect with <b>Google+</b></a>
+            <a href="{% url 'social:begin' 'github' %}" class="btn btn-github btn-block"><i class="fa fa-github"></i> Connect with <b>GitHub</b></a>
+            <!-- <a href="#" class="btn btn-linkedin btn-block"><i class="fa fa-linkedin"></i> Connect with <b>LinkedIn</b></a> -->
+        </div>
+
+        <div class="or-seperator"><i>or</i></div>
+        
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" name="username" placeholder="Username" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="form-group text-right" style="font-size: 14px; padding-top:5px;">
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+        </div>        
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block login-btn">Sign in</button>
+        </div> 
+
+    </form>
     
-    <a href="{% url 'social:begin' 'github' %}">
-      <button type="button" name="button" class="btn btn-primary">Github</button>
-    </a>
+    <div class="hint-text small">
+        Don't have an account? <a href="{% url 'register' %}" class="text-success">Register Now!</a>
+    </div>
+</div>
 
-    <a href="{% url 'social:begin' 'google-oauth2' %}">
-      <button type="button" name="button" class="btn btn-danger">Google+</button>
-    </a>
-</form>
 {% endblock %}

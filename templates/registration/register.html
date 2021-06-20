@@ -1,10 +1,45 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<h2>Register</h2>
+<div class="login-form">
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <p><input type="submit" value="Register" class="btn btn-outline-success"></p>
+    <h2 class="text-center">Sign up</h2>    
+
+    <div class="text-center social-btn">
+      <a href="#" class="btn btn-google btn-block"><i class="fa fa-google"></i> Connect with <b>Google+</b></a>
+      <a href="#" class="btn btn-github btn-block"><i class="fa fa-github"></i> Connect with <b>GitHub</b></a>
+      <!-- <a href="#" class="btn btn-linkedin btn-block"><i class="fa fa-linkedin"></i> Connect with <b>LinkedIn</b></a> -->
+    </div>
+
+    <div class="or-seperator"><i>or</i></div>
+
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" class="form-control" name="username" placeholder="Username" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+    </div>
+
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        <input type="password" class="form-control" name="password" placeholder="Password" required>
+      </div>
+    </div>        
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-block login-btn">Create Acccount</button>
+    </div> 
+
   </form>
-  <a href="{% url 'login' %}">Back to login</a>
+    
+  <div class="hint-text small">
+    Already have an account? <a href="{% url 'login' %}" class="text-success">Sign-in here</a>
+  </div>
+</div>
+
 {% endblock %}
